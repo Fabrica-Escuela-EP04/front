@@ -34,9 +34,9 @@ jobs:
             - name: Install vercel Cli
               run: npm install --global vercel@latest
             - name: Pull vercel enviroment variables
-              run: vecel pull --yes --token=${{secrets.VERCEL_TOKEN}}
+              run: vercel pull --yes --token=${{secrets.VERCEL_TOKEN}}
             - name: Trigger Vercel Deployment
-              run: vecel deploy --no-wait --token=${{secrets.VERCEL_TOKEN}}
+              run: vercel deploy --no-wait --token=${{secrets.VERCEL_TOKEN}}
     Deploy-Pro: 
         name: Deploy to Vercel (Pro)
         needs: build
@@ -51,6 +51,6 @@ jobs:
             - name: Install vercel Cli
               run: npm install --global vercel@latest
             - name: Pull vercel enviroment variables
-              run: vecel pull --yes --token=${{secrets.VERCEL_TOKEN}}
+              run: vercel pull --yes --token=${{secrets.VERCEL_TOKEN}}
             - name: Trigger Vercel Deployment
-              run: vecel deploy --prod --no-wait --token=${{secrets.VERCEL_TOKEN}}
+              run: verel deploy --prod --no-wait --token=${{secrets.VERCEL_TOKEN}}
