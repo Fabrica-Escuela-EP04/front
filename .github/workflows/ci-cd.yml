@@ -53,4 +53,4 @@ jobs:
             - name: Pull vercel enviroment variables
               run: vercel pull --yes --token=${{secrets.VERCEL_TOKEN}}
             - name: Trigger Vercel Deployment
-              run: verel deploy --prod --no-wait --token=${{secrets.VERCEL_TOKEN}}
+              run: vercel deploy --prod --no-wait --token=${{secrets.VERCEL_TOKEN}}
