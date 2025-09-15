@@ -38,7 +38,7 @@ jobs:
             - name: Trigger Vercel Deployment
               run: vercel deploy --no-wait --token=${{secrets.VERCEL_TOKEN}}
     Deploy-Pro: 
-        name: Deploy to Vercel (Pro)
+        name: Deploy to Vercel (Pro )
         needs: build
         runs-on: ubuntu-latest
         if: github.ref == 'refs/heads/main'
