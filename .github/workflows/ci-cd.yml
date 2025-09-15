@@ -35,9 +35,9 @@ jobs:
             - name: Install vercel Cli
               run: npm install --global vercel@latest
             - name: Pull vercel enviroment variables
-              run: vercel pull --yes --token=${{secrets.VERCEL_TOKEN}}  --org-id=${{ secrets.VERCEL_ORG_ID }} --project-id=${{ secrets.VERCEL_PROJECT_ID_DEV }}
+              run: vercel pull --yes --token=${{secrets.VERCEL_TOKEN}} --project-id=${{ secrets.VERCEL_PROJECT_ID_DEV }}
             - name: Trigger Vercel Deployment
-              run: vercel deploy --no-wait --token=${{secrets.VERCEL_TOKEN}} --org-id=${{ secrets.VERCEL_ORG_ID }} --project-id=${{ secrets.VERCEL_PROJECT_ID_DEV }}
+              run: vercel deploy --no-wait --token=${{secrets.VERCEL_TOKEN}} --project-id=${{ secrets.VERCEL_PROJECT_ID_DEV }}
 
     Deploy-Pro: 
         name: Deploy to Vercel (Pro )
@@ -53,6 +53,6 @@ jobs:
             - name: Install vercel Cli
               run: npm install --global vercel@latest
             - name: Pull vercel enviroment variables
-              run: vercel pull --yes --token=${{secrets.VERCEL_TOKEN}}  --org-id=${{ secrets.VERCEL_ORG_ID }} --project-id=${{ secrets.VERCEL_PROJECT_ID }}
+              run: vercel pull --yes --token=${{secrets.VERCEL_TOKEN}} --project-id=${{ secrets.VERCEL_PROJECT_ID }}
             - name: Trigger Vercel Deployment
-              run: vercel deploy --prod --no-wait --token=${{secrets.VERCEL_TOKEN}}  --org-id=${{ secrets.VERCEL_ORG_ID }} --project-id=${{ secrets.VERCEL_PROJECT_ID}}
+              run: vercel deploy --prod --no-wait --token=${{secrets.VERCEL_TOKEN}} --project-id=${{ secrets.VERCEL_PROJECT_ID}}
