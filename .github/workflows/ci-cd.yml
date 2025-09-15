@@ -27,7 +27,7 @@ jobs:
         runs-on: ubuntu-latest
         if: github.ref == 'refs/heads/dev'
         steps:
-            - uses: actions/checokut@v3
+            - uses: actions/checkout@v3
             - name: use Node.js 22
               uses: actions/setup-node@v3
               with:
