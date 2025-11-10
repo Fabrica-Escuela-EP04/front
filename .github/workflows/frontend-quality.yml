@@ -46,11 +46,24 @@ jobs:
           echo "Verificando umbrales de cobertura..."
           npm test -- --coverage --run --exclude='**/ClinicRegistrationForm.test.tsx' > coverage-output.txt 2>&1 || true
           
-          # Extraer métricas de cobertura
-          STATEMENTS=$(grep "All files" coverage-output.txt | awk '{print $2}' | sed 's/%//')
-          BRANCHES=$(grep "All files" coverage-output.txt | awk '{print $3}' | sed 's/%//')
-          FUNCTIONS=$(grep "All files" coverage-output.txt | awk '{print $4}' | sed 's/%//')
-          LINES=$(grep "All files" coverage-output.txt | awk '{print $5}' | sed 's/%//')
+          # Extraer métricas de cobertura de la tabla
+          COVERAGE_LINE=$(grep "All files" coverage-output.txt | head -1)
+          STATEMENTS=$(echo "$COVERAGE_LINE" | awk '{print $2}' | tr -d '%')
+          BRANCHES=$(echo "$COVERAGE_LINE" | awk '{print $3}' | tr -d '%')
+          FUNCTIONS=$(echo "$COVERAGE_LINE" | awk '{print $4}' | tr -d '%')
+          LINES=$(echo "$COVERAGE_LINE" | awk '{print $5}' | tr -d '%')
+          
+          # Valores por defecto si no se pueden extraer
+          STATEMENTS=${STATEMENTS:-0}
+          BRANCHES=${BRANCHES:-0}
+          FUNCTIONS=${FUNCTIONS:-0}
+          LINES=${LINES:-0}
+          
+          echo "Metricas extraidas:"
+          echo "  Statements: $STATEMENTS%"
+          echo "  Branches: $BRANCHES%"
+          echo "  Functions: $FUNCTIONS%"
+          echo "  Lines: $LINES%"
           
           echo "statements=$STATEMENTS" >> $GITHUB_OUTPUT
           echo "branches=$BRANCHES" >> $GITHUB_OUTPUT
@@ -155,10 +168,11 @@ jobs:
           echo "- Reporte de cobertura HTML disponible en artifacts" >> $GITHUB_STEP_SUMMARY
       
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+        uses: SonarSource/sonarqube-scan-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
         continue-on-error: true
       
       - name: Comment Coverage on PR
