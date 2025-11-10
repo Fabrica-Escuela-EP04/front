@@ -7,6 +7,7 @@ import App from './App';
 vi.mock('./pages/Index', () => ({
   default: () => <div data-testid="index-page">Index Page</div>,
 }));
+//Final
 
 vi.mock('./pages/NotFound', () => ({
   default: () => <div data-testid="not-found-page">Not Found Page</div>,
