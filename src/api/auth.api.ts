@@ -8,3 +8,9 @@ export async function login(email: string, password: string): Promise<User> {
   });
 }
 
+export async function logout() {
+  return http<void>("/auth/logout", {
+    method: "POST"
+  });
+}
+

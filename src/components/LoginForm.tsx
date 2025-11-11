@@ -28,7 +28,7 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 interface LoginFormProps {
-  onLoginSuccess: (userRole: string) => void;
+  onLoginSuccess: (user: User) => void;
 }
 
 export function LoginForm({ onLoginSuccess }: LoginFormProps) {
@@ -53,14 +53,18 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
       const user = await handleLogin(data.email, data.password);
       // Check the role
       console.log("Entering to administrator step check")
-      if(typeof user === "object" &&
-      user !== null &&
-      "idRole" in user &&
-      typeof user.idRole === "number" &&
-      user.idRole === 3) {
-        console.log(user.idRole)
-        onLoginSuccess("admin")
-      } 
+      if(typeof user === "object" && user !== null){
+
+        if("userRole" in user &&
+          typeof user.userRole === "string"){
+            console.log(user.userRole);
+            onLoginSuccess(user);
+
+        } else if("detail" in user && typeof user.detail == "string"){
+          setError(user.detail);
+        } 
+      }
+        
     } catch (err) {
       setError("Error de conexión. Inténtelo de nuevo.");
     } finally {

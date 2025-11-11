@@ -38,10 +38,8 @@ interface ClinicRegistrationFormProps {
 }
 
 export function ClinicRegistrationForm({onCancel, onSuccess }: ClinicRegistrationFormProps) {
-  const [isLoading, setIsLoading] = useState(false);
   const { handleCreateMedicalOffice } = useCreateMedOffice();
-  const [error, setError] = useState<string | null>(null);
-  const { medicalInfo, isLoading: isMedicalLoading, error: medicalError } = useMedicalInfo();
+  const { medicalInfo, isLoading, error } = useMedicalInfo();
 
   const {
     register,
@@ -63,36 +61,13 @@ export function ClinicRegistrationForm({onCancel, onSuccess }: ClinicRegistratio
         "specialtyName": data.type,
         "status": data.status
       }
-      const { createdOffice, isLoading, error } = await handleCreateMedicalOffice(newOffice);
+      const { createdOffice } = await handleCreateMedicalOffice(newOffice);
       console.log(createdOffice.officeNumber);
       onSuccess();
   };
 
   return (
-    <div className="min-h-screen bg-medical-light-gray">
-      {/* Sidebar */}
-      <div className="flex">
-        <div className="w-64 bg-medical-light-gray border-r border-medical-border min-h-screen p-4">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-8 h-8 bg-medical-primary rounded flex items-center justify-center">
-              <Building2 className="h-5 w-5 text-medical-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="text-lg font-semibold text-medical-dark">Medical</h1>
-              <p className="text-sm text-medical-gray">Admin</p>
-            </div>
-          </div>
-          
-          <nav className="space-y-2">
-            <div className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-medical-dark bg-medical-primary/10 rounded-md">
-              <Building2 className="h-4 w-4" />
-              DASHBOARD
-            </div>
-          </nav>
-        </div>
-
-        {/* Main Content */}
-        <div className="flex-1 p-8">
+        <div className="flex-1 bg-medical-light-gray p-8">
           <Card className="max-w-2xl mx-auto shadow-lg">
             <CardHeader className="text-center border-b border-medical-border">
               <CardTitle className="text-xl font-semibold text-medical-dark">
@@ -231,7 +206,7 @@ export function ClinicRegistrationForm({onCancel, onSuccess }: ClinicRegistratio
                       <SelectContent>
                         <SelectItem value="Activo">Activo</SelectItem>
                         <SelectItem value="Inactivo">Inactivo</SelectItem>
-                        <SelectItem value="En mantenimiento">En mantenimiento</SelectItem>
+                        <SelectItem value="Mantenimiento">En mantenimiento</SelectItem>
                       </SelectContent>
                     </Select>
                     {errors.status && (
@@ -284,14 +259,6 @@ export function ClinicRegistrationForm({onCancel, onSuccess }: ClinicRegistratio
               </form>
             </CardContent>
           </Card>
-
-          {/* User info in bottom left */}
-          <div className="fixed bottom-4 left-4 text-xs text-medical-gray">
-            <p>ADMIN USER</p>
-            <p>admin@medicaladmin.com</p>
-          </div>
         </div>
-      </div>
-    </div>
   );
 }
