@@ -6,5 +6,5 @@ export interface User{
     document: string,
     documentType: string,
     phoneNumber: string,
-    idRole: number
+    userRole: string
 }

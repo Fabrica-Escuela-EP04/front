@@ -28,14 +28,15 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 interface LoginFormProps {
-  onLoginSuccess: (userRole: string) => void;
+  onLoginSuccess: (user: User) => void;
+  errorMessage?: string;
 }
 
-export function LoginForm({ onLoginSuccess }: LoginFormProps) {
+export function LoginForm({ onLoginSuccess, errorMessage }: LoginFormProps) {
   const { handleLogin } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(errorMessage);
 
   const {
     register,
@@ -53,14 +54,19 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
       const user = await handleLogin(data.email, data.password);
       // Check the role
       console.log("Entering to administrator step check")
-      if(typeof user === "object" &&
-      user !== null &&
-      "idRole" in user &&
-      typeof user.idRole === "number" &&
-      user.idRole === 3) {
-        console.log(user.idRole)
-        onLoginSuccess("admin")
-      } 
+      if(typeof user === "object" && user !== null){
+        console.log("object retrieved");
+        if("userRole" in user &&
+          typeof user.userRole === "string"){
+            console.log(user.userRole);
+            onLoginSuccess(user);
+
+        } else if("detail" in user && typeof user.detail == "string"){
+          console.log("is a bussines exception");
+          setError(user.detail);
+        } 
+      }
+        
     } catch (err) {
       setError("Error de conexión. Inténtelo de nuevo.");
     } finally {
