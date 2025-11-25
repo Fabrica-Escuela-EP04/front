@@ -65,7 +65,8 @@ export function ClinicRegistrationForm({onCancel, onSuccess, medicalInfo }: Clin
       }
       setIsloading(true);
       const { createdOffice, error } = await handleCreateMedicalOffice(newOffice);
-      
+      console.log(typeof createdOffice);
+      console.log("is office: " + "clinicName" in createdOffice);
       // Handling creation errors
       if (error != null ){
         setError(error);

@@ -23,8 +23,15 @@ const Index = () => {
   const [medOfficesSchedules, setMedOfficesSchedules] = useState<MedicalOfficeAndSchedule[]>();
    const { handleLogout } = useLogout();
   
-  const normalizeStatus = (medOffices) => {
-      medOffices.map((office) => office.status = office.status.charAt(0) + office.status.slice(1).toLowerCase() );
+  const normalizeStatus = (medOffices:MedicalOfficeAndSchedule[]) => {
+      medOffices.map((office) => office.status = office.status.charAt(0) + office.status.slice(1).toLowerCase());
+      return medOffices;
+  }
+
+  const addUserId = (medOffices:MedicalOfficeAndSchedule[], user) => {
+      console.log("entre a esta funcion");
+      console.log("idUser:" + user.idUser);
+      medOffices.map((office) => office.idUser = user.idUser);
       return medOffices;
   }
 
@@ -63,8 +70,11 @@ const Index = () => {
             && medOfficesAndSchedules.length >0 && "idOffice" in medOfficesAndSchedules[0]){
           console.log("Info cargada correctamente!")
           setMedInfo(medicalInfo);
-          const normalizedOffices = normalizeStatus(medOfficesAndSchedules);
-          setMedOfficesSchedules(medOfficesAndSchedules);
+          let normalizedOffices = normalizeStatus(medOfficesAndSchedules);
+          console.log("Normalizadas");
+          normalizedOffices = addUserId(medOfficesAndSchedules, user);
+         //console.log("Added user id");
+          setMedOfficesSchedules(normalizedOffices);
           setCurrentView("dashboard");
           toast({
             title: "Inicio de sesión exitoso",

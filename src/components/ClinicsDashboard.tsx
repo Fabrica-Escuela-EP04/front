@@ -34,6 +34,8 @@ export function ClinicsDashboard({ onNewClinic, medicalInfo, medOfficesAndSchedu
   const { handleUpdateMedOffice } = useUpdateMedOffice();
   const { handleDeleteMedicalOffice } = useDeleteMedOffice();
   
+  console.log("idUser office random: "+medOfficesSchedules[0].idUser);
+
   useEffect(() => {
     if (medOfficesSchedules?.length) {
       setMedOffices(medOfficesSchedules);
@@ -51,12 +53,10 @@ export function ClinicsDashboard({ onNewClinic, medicalInfo, medOfficesAndSchedu
   };
 
   const handleUpdateOffice = async (updatedOffice: MedicalOfficeAndSchedule) => {
+    console.log("idOffice: "+updatedOffice.idOffice);
     const upOffice = await handleUpdateMedOffice(updatedOffice);
     let toastMessage:string;
     let toastTitle:string;
-    console.log(typeof upOffice);
-    console.log(upOffice !== null);
-    console.log("detail" in upOffice);
 
     if (typeof upOffice === "object" && upOffice !== null && "idOffice" in upOffice){
       setMedOffices(medOfficesSchedules.map(c => c.idOffice === updatedOffice.idOffice ? updatedOffice : c));
@@ -77,11 +77,10 @@ export function ClinicsDashboard({ onNewClinic, medicalInfo, medOfficesAndSchedu
     const deletedOffice = await handleDeleteMedicalOffice(idOffice);
     let toastMessage:string;
     let toastTitle:string;
-    console.log(typeof deletedOffice);
-    console.log("clinicName" in deletedOffice);
+    
     // handling errors
     if ( typeof deletedOffice === "object" && deletedOffice !== null && "clinicName" in deletedOffice){
-      deletingClinic.status = deletedOffice.status;
+      deletingClinic.status = deletedOffice.status.charAt(0)+ deletedOffice.status.slice(1).toLowerCase();
       setDeletingOffice(deletingClinic);
       setMedOffices(medOfficesSchedules.map(c => c.idOffice === idOffice ? deletingClinic : c));
       toastTitle = "Consultorio eliminado"

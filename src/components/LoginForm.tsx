@@ -55,13 +55,14 @@ export function LoginForm({ onLoginSuccess, errorMessage }: LoginFormProps) {
       // Check the role
       console.log("Entering to administrator step check")
       if(typeof user === "object" && user !== null){
-
+        console.log("object retrieved");
         if("userRole" in user &&
           typeof user.userRole === "string"){
             console.log(user.userRole);
             onLoginSuccess(user);
 
         } else if("detail" in user && typeof user.detail == "string"){
+          console.log("is a bussines exception");
           setError(user.detail);
         } 
       }

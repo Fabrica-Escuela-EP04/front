@@ -25,6 +25,8 @@ export function ClinicEditDialog({ medicalOffice, open, medicalInfo, onOpenChang
     setFormData(medicalOffice);
   }, [medicalOffice]);
 
+  console.log("idUser: "+formData.idUser);
+
   const handleStatusChange = (value: string) => {
     setFormData({ ...formData, status: value });
     
