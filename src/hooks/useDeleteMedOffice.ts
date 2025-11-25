@@ -13,7 +13,7 @@ export function useDeleteMedOffice(){
         try {
             const deletedOffice = await deleteMedicalOffice(idOffice);
             setMedicalOffice(deletedOffice);
-            return {deletedOffice, isLoading, error};
+            return deletedOffice;
         } catch (err) {
             setError("Error al actualizar nuevo consultorio");
             console.error(err);

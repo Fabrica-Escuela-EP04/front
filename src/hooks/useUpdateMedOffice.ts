@@ -14,7 +14,7 @@ export function useUpdateMedOffice(){
         try {
             const updateOffice = await updateMedicalOffice(medOffice.idOffice, medOffice);
             setMedicalOfficeCod(updateOffice);
-            return {updateOffice, isLoading, error};
+            return updateOffice;
         } catch (err) {
             setError("Error al actualizar nuevo consultorio");
             console.error(err);

@@ -29,13 +29,14 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 interface LoginFormProps {
   onLoginSuccess: (user: User) => void;
+  errorMessage?: string;
 }
 
-export function LoginForm({ onLoginSuccess }: LoginFormProps) {
+export function LoginForm({ onLoginSuccess, errorMessage }: LoginFormProps) {
   const { handleLogin } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(errorMessage);
 
   const {
     register,

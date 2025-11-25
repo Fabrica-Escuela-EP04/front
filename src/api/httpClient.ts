@@ -13,5 +13,11 @@ export async function http<T>(
     ...options,
   });
 
+  const contentType = res.headers.get("Content-Type");
+
+  if (res.status === 204 || !contentType || !contentType.includes("application/json")) {
+    return undefined as T; 
+  }
+
   return res.json();
 }

@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, Wrench } from "lucide-react";
+import { LayoutDashboard, Users, LogOut } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -9,32 +9,34 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-const menuItems = [
-  {
-    title: "Dashboard",
-    icon: LayoutDashboard,
-    url: "#",
-  },
-  {
-    title: "Admin. Consultorios",
-    icon: Users,
-    url: "#",
-    active: true,
-  },
-  {
-    title: "Mantenimientos Programados",
-    icon: Wrench,
-    url: "#",
-  },
-];
-
 interface AppSideBarProps{
     name: string,
     lastName: string,
-    email: string
+    email: string,
+    onLogoutHandle: () => void;
 }
 
-export function AppSidebar({name, lastName, email}:AppSideBarProps) {
+export function AppSidebar({name, lastName, email, onLogoutHandle}:AppSideBarProps) {
+
+    const menuItems = [
+    /*{
+      title: "Dashboard",
+      icon: LayoutDashboard,
+      url: "#",
+    },*/
+    {
+      title: "Admin. Consultorios",
+      icon: Users,
+      url: "#",
+      active: true,
+    } ,
+    {
+      title: "Cerrar Sesion",
+      icon: LogOut,
+      onClick: onLogoutHandle,
+    },
+  ];
+
   return (
     <Sidebar className="border-r border-medical-border">
       <SidebarHeader className="border-b border-medical-border p-6">
@@ -67,10 +69,20 @@ export function AppSidebar({name, lastName, email}:AppSideBarProps) {
                 isActive={item.active}
                 className="w-full justify-start gap-3 px-3 py-2.5 text-base"
               >
-                <a href={item.url}>
-                  <item.icon className="h-5 w-5" />
-                  <span className="font-medium">{item.title}</span>
-                </a>
+                {item.onClick ? (
+                  <button
+                    onClick={item.onClick}
+                    className="flex w-full items-center gap-3 text-left"
+                  >
+                    <item.icon className="h-5 w-5" />
+                    <span className="font-medium">{item.title}</span>
+                  </button>
+                ) : (
+                  <a href={item.url}>
+                    <item.icon className="h-5 w-5" />
+                    <span className="font-medium">{item.title}</span>
+                  </a>
+                )}
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

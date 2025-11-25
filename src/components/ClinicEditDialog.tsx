@@ -7,18 +7,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { MaintenanceDateDialog } from "@/components/MaintenanceDateDialog";
 import { MedicalOfficeAndSchedule } from "@/models/MedicalOfficeAndSchedule";
 import { useMedicalInfo } from "@/hooks/useMedicalInfo";
+import { MedicalInformation } from "@/models/MedicalInformation";
 
 interface ClinicEditDialogProps {
   medicalOffice: MedicalOfficeAndSchedule;
   open: boolean;
+  medicalInfo:MedicalInformation;
   onOpenChange: (open: boolean) => void;
   onSave: (medicalOffice: MedicalOfficeAndSchedule) => void;
 }
 
-export function ClinicEditDialog({ medicalOffice, open, onOpenChange, onSave }: ClinicEditDialogProps) {
+export function ClinicEditDialog({ medicalOffice, open, medicalInfo, onOpenChange, onSave }: ClinicEditDialogProps) {
   const [formData, setFormData] = useState<MedicalOfficeAndSchedule>(medicalOffice);
   const [showMaintenanceDialog, setShowMaintenanceDialog] = useState(false);
-  const { medicalInfo, isLoading, error } = useMedicalInfo();
 
   useEffect(() => {
     setFormData(medicalOffice);

@@ -1,19 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { findAllMedicalOffices } from "@/api/medicalOffice.api";
 import { MedicalOfficeAndSchedule } from "@/models/MedicalOfficeAndSchedule";
 
 export function useFindAllMedOffices() {
     const [medOfficesAndSchedules, setMedOffAndSchedule] = useState<MedicalOfficeAndSchedule[]>([]);
 
-    const findAllOffices = async () => {
+    async function findAllOffices() {
         const medicalOfficesAndSchedules = await findAllMedicalOffices();
         setMedOffAndSchedule(medicalOfficesAndSchedules);
+        return medicalOfficesAndSchedules;
     }
 
-    useEffect(() => {
-        findAllOffices();
-      }, []);
-
-    return { medOfficesAndSchedules, reload: findAllOffices};
+    return { medOfficesAndSchedules, findAllOffices};
 }
 

@@ -1,5 +1,5 @@
 export interface MedicalOffice{
-    idOffice?: string
+    idOffice?: number;
     clinicName: string,
     specialtyName: string,
     officeNumber: number,

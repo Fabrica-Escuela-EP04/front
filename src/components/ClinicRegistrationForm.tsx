@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useMedicalInfo } from "@/hooks/useMedicalInfo";
 import { useCreateMedOffice } from "@/hooks/useCreateMedOffice";
 import { MedicalOffice } from "@/models/MedicalOffice";
 import { useForm } from "react-hook-form";
@@ -11,7 +10,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, Building2, ChevronDown } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { MedicalInformation } from "@/models/MedicalInformation";
 
 const clinicSchema = z.object({
   name: z
@@ -34,12 +34,14 @@ type ClinicFormData = z.infer<typeof clinicSchema>;
 
 interface ClinicRegistrationFormProps {
   onCancel: () => void;
-  onSuccess: () => void;
+  onSuccess: (office:MedicalOffice) => void;
+  medicalInfo: MedicalInformation;
 }
 
-export function ClinicRegistrationForm({onCancel, onSuccess }: ClinicRegistrationFormProps) {
+export function ClinicRegistrationForm({onCancel, onSuccess, medicalInfo }: ClinicRegistrationFormProps) {
   const { handleCreateMedicalOffice } = useCreateMedOffice();
-  const { medicalInfo, isLoading, error } = useMedicalInfo();
+  const [ isLoading, setIsloading] = useState<boolean>(false);
+  const [ error, setError ] = useState<string | null >(null);
 
   const {
     register,
@@ -61,9 +63,21 @@ export function ClinicRegistrationForm({onCancel, onSuccess }: ClinicRegistratio
         "specialtyName": data.type,
         "status": data.status
       }
-      const { createdOffice } = await handleCreateMedicalOffice(newOffice);
-      console.log(createdOffice.officeNumber);
-      onSuccess();
+      setIsloading(true);
+      const { createdOffice, error } = await handleCreateMedicalOffice(newOffice);
+      
+      // Handling creation errors
+      if (error != null ){
+        setError(error);
+      } else if ("idClinic" in createdOffice){
+          console.log(createdOffice.officeNumber);
+          onSuccess(newOffice);
+      } else if("detail" in createdOffice) {
+          setError(createdOffice.detail);
+      } else {
+        setError("Ha ocurrido un error en la creación del consultorio, intente más tarde.");
+      }
+      setIsloading(false);
   };
 
   return (
